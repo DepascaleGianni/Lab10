@@ -11,7 +11,7 @@ class DAO():
         result = []
 
         cursor = conn.cursor(dictionary=True)
-        query = "SELECT * FROM country"
+        query = "SELECT * FROM country order by country.StateNme"
 
         cursor.execute(query, ())
 
@@ -61,8 +61,9 @@ class DAO():
         result = []
 
         query = """select distinct state1no 
-                    from contiguity c
-                    where c.`year` <= %s"""
+                    from contiguity c, country c2
+                    where c.`year` <= %s and c.state1no = c2.CCode
+                    order by c2.StateNme"""
 
         cursor.execute(query, (year,))
 
