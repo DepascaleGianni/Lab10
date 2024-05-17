@@ -12,3 +12,6 @@ class Country:
 
     def __str__(self):
         return f'{self.StateAbb} - {self.StateNme}'
+
+    def __eq__(self, other):
+        return self.CCode == other.CCode
