@@ -29,7 +29,7 @@ class View(ft.UserControl):
 
         self._ddCountry = ft.Dropdown(label="Country", on_click=self._controller.read_country)
         self._controller.fill_dd_country()
-        self._btnCalcolaRaggiungibili = ft.ElevatedButton(text="Calcola raggiungibili", on_click=self._controller.handleCalcolaRaggiungibili,disabled=True)
+        self._btnCalcolaRaggiungibili = ft.ElevatedButton(text="Calcola raggiungibili", on_click=self._controller.handleCalcolaRaggiungibiliRicorsione,disabled=True)
         row2 = ft.Row([self._ddCountry, self._btnCalcolaRaggiungibili], alignment=ft.MainAxisAlignment.CENTER)
         self._page.controls.append(row2)
 

@@ -1,5 +1,8 @@
+import copy
+
 import networkx as nx
 from database.DAO import DAO
+from model.country import Country
 
 
 class Model:
@@ -10,6 +13,7 @@ class Model:
         self.countries_map = {}
         for c in self._all_countries:
             self.countries_map[c.CCode] = c
+        self.reachable_recursion_graph = nx.Graph()
 
 
     def build_graph(self, year):
@@ -47,6 +51,26 @@ class Model:
         for u, v in edges:
             visited.append(v)
         return visited
+
+    def get_reachable_recursion(self,source):
+        self.reachable_recursion_graph.clear()
+        self.recursion(source, available=list(self._sol_graph.nodes))
+        return list(self.reachable_recursion_graph.nodes)
+
+    def recursion(self,source, available : list[Country]) :
+        #condizione terminale : non ho più nodi in cui andare
+        #if .....
+        if len(list(self.reachable_recursion_graph.nodes)) == 0:
+            self.reachable_recursion_graph.add_node(source)
+            available.remove(source)
+            self.recursion(source,available)
+        else:
+            for v in available:
+                if self._sol_graph.has_edge(source,v):
+                    self.reachable_recursion_graph.add_edge(source,v)
+                    available.remove(v)
+                    self.recursion(v, available)
+
 
     def number_conn_comp(self):
          return len(list(nx.connected_components(self._sol_graph)))

@@ -33,6 +33,7 @@ class Controller:
         self._view._page.update()
 
     def handleCalcolaRaggiungibili(self,e):
+        #  to handle non-existing country prob
         visited = self._model.get_BFS_nodes(self._sel_country)
         self._view._txt_result.controls.clear()
         self._view._txt_result.controls.append(
@@ -43,7 +44,19 @@ class Controller:
             self._view._txt_result.controls.append(ft.Text(v))
         self._view._page.update()
 
-
+    def handleCalcolaRaggiungibiliRicorsione(self,e):
+        self._view._txt_result.controls.clear()
+        if self._sel_country not in list(self._model._sol_graph.nodes):
+            self._view._txt_result.controls.append(ft.Text("this country didn't exist in till the sel year"))
+        else:
+            visited = self._model.get_reachable_recursion(self._sel_country)
+            self._view._txt_result.controls.append(
+                ft.Text(f"from {self._sel_country} you can reach "
+                        f"{len(visited)} countries.")
+            )
+            for v in visited:
+                self._view._txt_result.controls.append(ft.Text(v))
+        self._view._page.update()
 
     def fill_dd_country(self):
         countries = self._model.get_countries()
